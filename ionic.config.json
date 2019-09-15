@@ -1,5 +1,7 @@
 {
   "name": "repartoApp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

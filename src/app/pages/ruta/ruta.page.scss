@@ -1,0 +1,17 @@
+agm-map {
+    height: 100vh;
+}
+
+.head {
+    position: absolute;
+    width: 95vw;
+    left: 2.5vw;
+    top: 20px;
+}
+
+.caja-input {
+    border: 1px solid var(--ion-color-primary);
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+}
