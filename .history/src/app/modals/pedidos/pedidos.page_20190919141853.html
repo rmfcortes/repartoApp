@@ -1,0 +1,23 @@
+<ion-header no-border>
+    <ion-toolbar>
+        <ion-buttons slot="end">
+            <ion-button (click)="regresar()">
+                <ion-icon color="primary" slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item lines="full" *ngFor="let pedido of pedidos" detail>
+            <ion-label slot="start" class="ion-text-wrap">
+                <h2 style="color: var(--ion-color-primary);">{{pedido.usuario}}</h2>
+                <h5>{{pedido.pedido.direccion.direccion}}</h5>
+            </ion-label>
+            <ion-badge style="--background: transparent; --color:pedido.minutos > 15 ? 'primary' : pedido.minutos > 5 ? 'secondary' : 'danger'" slot="end">
+                {{pedido.minutos}} : {{pedido.segundos}}
+            </ion-badge>
+        </ion-item>
+    </ion-list>
+</ion-content>

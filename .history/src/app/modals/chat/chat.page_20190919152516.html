@@ -1,0 +1,43 @@
+<ion-header no-border>
+    <ion-toolbar>
+        <ion-buttons slot="end">
+            <ion-button (click)="regresar()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row *ngFor="let message of messages">
+            <ng-container *ngIf="!message.isMe; else msgTemplate">
+                <ion-col offset="3" size="9" class="message my-message">
+                    <span>{{ message.msg }}</span>
+                    <div class="time" class="ion-text-right"><br>{{ message.createdAt | date:'shortTime' }}</div>
+                </ion-col>
+            </ng-container>
+            <ng-template #msgTemplate>
+                <ion-col size="9" class="message other-message">
+                    <span>{{ message.msg }}</span>
+                    <div class="time" class="ion-text-right"><br>{{ message.createdAt | date:'shortTime' }}</div>
+                </ion-col>
+            </ng-template>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-row class="ion-no-margin align-items-center">
+            <ion-col size="10">
+                <textarea autosize class="message-input" maxRows="4" [(ngModel)]="newMsg"></textarea>
+            </ion-col>
+            <ion-col size="2">
+                <ion-button expand="block" fill="clear" color="primary" [disabled]="!newMsg" class="msg-btn" (click)="sendMessage()">
+                    <ion-icon name="ios-send" slot="icon-only"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,180 @@
+<ion-header *ngIf="!inicioPage" no-border>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="regresar()">
+                <ion-icon color="primary" slot="icon-only" name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title color="primary">Cierre turno</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-slides [options]="slideOpts">
+        <ion-slide>
+            <div style="width: 100%; height: 100%">
+                <ng-container *ngIf="prodsReady; else prodsTemplate">
+                    <ion-grid *ngFor="let prod of productos" style="width: 60vw; margin-top: 0" fixed>
+                        <ion-row>
+                            <ion-col size="12">
+                                <preload-image style="width: 25vw; margin: auto" [ratio]="{w: 1, h: .75}" [src]="prod.foto">
+                                </preload-image>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <h6 style="text-align: center">{{prod.nombre}}</h6>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <div>
+                                    <ng-container *ngIf="!prod.agregado; else botones">
+                                        <ion-button expand="block" (click)="addProduct(prod)" class="boton-add" fill="clear" color="primary" size="small">
+                                            Agregar
+                                        </ion-button>
+                                    </ng-container>
+                                    <ng-template #botones>
+                                        <ion-button expand="block" class="boton-add" fill="clear" color="primary" size="small">
+                                            <ion-grid fixed class="ion-no-padding">
+                                                <ion-row class="ion-no-padding">
+                                                    <ion-col class="ion-align-self-center ion-no-padding" size="3" (click)="minusProduct(prod)">
+                                                        -
+                                                    </ion-col>
+                                                    <ion-col class="ion-align-self-center ion-no-padding" size="6">
+                                                        <ion-input class="inpu" type="number" [(ngModel)]="prod.cantidad"></ion-input>
+                                                    </ion-col>
+
+                                                    <ion-col class="ion-align-self-center ion-no-padding" size="3" (click)="plusProduct(prod)">
+                                                        <strong>+</strong>
+                                                    </ion-col>
+                                                </ion-row>
+                                            </ion-grid>
+                                        </ion-button>
+                                    </ng-template>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                        <hr style="border-bottom: 1px solid #d1d1d1">
+                    </ion-grid>
+                </ng-container>
+                <ng-template #prodsTemplate>
+                    <ion-grid *ngFor="let prod of [1,2,3,4]" style="width: 60vw; margin-top: 0" fixed>
+                        <ion-row>
+                            <ion-col size="12">
+                                <ion-skeleton-text animated style="width: 25vw; height: 31.25vw; margin: auto"></ion-skeleton-text>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <h6 style="text-align: center">
+                                    <ion-skeleton-text animated style="width: 50%; margin: auto"></ion-skeleton-text>
+                                </h6>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col size="12">
+                                <div>
+                                    <ion-skeleton-text animated style="width: 100%; height: 30px; margin: auto"></ion-skeleton-text>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                        <hr style="border-bottom: 1px solid #d1d1d1">
+                    </ion-grid>
+                </ng-template>
+            </div>
+        </ion-slide>
+        <ion-slide>
+            <ion-grid fixed>
+                <ion-row>
+                    <ion-col size="12">
+                        <ion-card style="text-align: center">
+                            <ion-card-header color="primary">
+                                <ion-card-subtitle>Balance</ion-card-subtitle>
+                                <ion-card-title>{{balance | currency:'CAD':'symbol-narrow':'1.0-2'}}</ion-card-title>
+                            </ion-card-header>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="6">
+                        <ion-card style="text-align: center">
+                            <ion-card-header color="success">
+                                <ion-card-subtitle>Venta</ion-card-subtitle>
+                                <ion-card-title>{{venta | currency:'CAD':'symbol-narrow':'1.0-2'}}</ion-card-title>
+                            </ion-card-header>
+                        </ion-card>
+                    </ion-col>
+                    <ion-col size="6">
+                        <ion-card style="text-align: center">
+                            <ion-card-header color="danger">
+                                <ion-card-subtitle>Gasto</ion-card-subtitle>
+                                <ion-card-title>{{gasto | currency:'CAD':'symbol-narrow':'1.0-2'}}</ion-card-title>
+                            </ion-card-header>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="12">
+                        <ion-list>
+                            <ion-item *ngFor="let viaje of viajes">
+                                <ion-label>
+                                    <h1 style="color: var(--ion-color-primary);">Viaje {{viaje.viaje}}</h1>
+                                    <h2>Venta: {{viaje.venta | currency:'CAD':'symbol-narrow':'1.0-2'}}</h2>
+                                    <h2>Gasto: {{viaje.gasto | currency:'CAD':'symbol-narrow':'1.0-2'}}</h2>
+                                </ion-label>
+                            </ion-item>
+                        </ion-list>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+
+
+        </ion-slide>
+    </ion-slides>
+
+
+    <ion-fab *ngIf="prodsReady && inicioPage" vertical="top" horizontal="end" slot="fixed">
+        <ng-container *ngIf="viaje > 2; else elseTemplate">
+            <ion-fab-button (click)="entregarVenta()" size="small">
+                <ion-icon name="log-out"></ion-icon>
+            </ion-fab-button>
+        </ng-container>
+        <ng-template #elseTemplate>
+            <ion-fab-button (click)="logOut()" size="small">
+                <ion-icon name="log-out"></ion-icon>
+            </ion-fab-button>
+        </ng-template>
+
+    </ion-fab>
+</ion-content>
+
+<ion-footer no-border *ngIf="prodsReady">
+    <ion-toolbar>
+        <ion-item *ngIf="!inicioPage">
+            <ion-label>Entrega $
+                <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input type="number" required [(ngModel)]="efectivoEntreado" name="entregado"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Contraseña de supervisor
+                <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input type="password" required [(ngModel)]="pass" name="pass"></ion-input>
+        </ion-item>
+        <ng-container *ngIf="inicioPage; else btnFin">
+            <ion-button [disabled]="pass.length === 0 ||  validando" expand="block" shape="round" (click)="validaPass()">
+                Empezar viaje
+                <ion-spinner style="margin-left: 0.5rem" *ngIf="validando" name="dots"></ion-spinner>
+            </ion-button>
+        </ng-container>
+        <ng-template #btnFin>
+            <ion-button [disabled]="pass.length === 0 ||  validando || !efectivoEntreado" expand="block" shape="round" (click)="evaluaDiferencia()">
+                Finalizar turno
+                <ion-spinner style="margin-left: 0.5rem" *ngIf="validando" name="dots"></ion-spinner>
+            </ion-button>
+        </ng-template>
+
+    </ion-toolbar>
+</ion-footer>
