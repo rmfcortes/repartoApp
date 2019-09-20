@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PedidosPage } from './pedidos.page';
+import { ProductosModalPage } from './productos-modal.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ChatPageModule } from '../chat/chat.module';
 
 
@@ -13,9 +14,10 @@ import { ChatPageModule } from '../chat/chat.module';
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     ChatPageModule,
   ],
-  declarations: [PedidosPage],
-  entryComponents: [PedidosPage]
+  declarations: [ProductosModalPage ],
+  entryComponents: [ProductosModalPage]
 })
-export class PedidosPageModule {}
+export class ProductosModalPageModule {}

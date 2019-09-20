@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ProductosModalPage } from './productos-modal.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ChatPageModule } from '../chat/chat.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    SharedModule
+    SharedModule,
+    ChatPageModule,
   ],
   declarations: [ProductosModalPage ],
   entryComponents: [ProductosModalPage]
