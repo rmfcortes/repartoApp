@@ -1,0 +1,93 @@
+<ion-header no-border>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-button (click)="regresar()">
+                <ion-icon color="light" slot="icon-only" name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Gasto</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="resetForm()">
+                Reset
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div class="container">
+        <ng-container *ngIf="fotoLista; else elseTemplate">
+            <div class="foto-container" (click)="activaCamara()">
+                <ion-img style="height: 85%; margin-top: 1rem" [src]="imagenPreview"></ion-img>
+            </div>
+        </ng-container>
+        <ng-template #elseTemplate>
+            <div class="foto-container" (click)="activaCamara()">
+                <ion-img style="height: 50%; margin-top: 2rem" src="../../../assets/img/camera.png"></ion-img>
+                <ion-label color="light">Toma una fotografía del ticket</ion-label>
+            </div>
+        </ng-template>
+
+        <div class="form-card">
+            <form #forma="ngForm" (submit)="guardarGasto()">
+                <ion-item>
+                    <ion-label color="medium" position="floating">Producto / servicio</ion-label>
+                    <ion-input [disabled]="guardando" [(ngModel)]="compra.nombre" type="text" name="nombre" required minlength="3"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="medium" position="floating">Tienda / proveedor</ion-label>
+                    <ion-input [disabled]="guardando" [(ngModel)]="compra.proveedor" type="text" name="proveedor" required minlength="3"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="medium" position="floating">Descripción</ion-label>
+                    <ion-textarea [disabled]="guardando" [(ngModel)]="compra.descripcion" type="text" name="descripcion" required minlength="3"></ion-textarea>
+                </ion-item>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-item lines="none">
+                                <ion-label color="medium" position="fixed">Costo</ion-label>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="8">
+                            <ion-item>
+                                <ion-note color="secondary" slot="start">$</ion-note>
+                                <ion-input [(ngModel)]="compra.costo" type="number" name="costo" required minlength="1"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-item lines="none">
+                                <ion-label color="medium" position="fixed">Cantidad</ion-label>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="8">
+                            <ion-item>
+                                <ion-input [(ngModel)]="compra.cantidad" type="number" name="cantidad" required minlength="1"></ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-item>
+                    <ion-label color="secondary">Tipo compra</ion-label>
+                    <ion-select interface="popover" [(ngModel)]="compra.tipo" required name="tipo">
+                        <ion-select-option value="Refaccion">Refaccion</ion-select-option>
+                        <ion-select-option value="Consumible">Consumible</ion-select-option>
+                        <ion-select-option value="Material">Material</ion-select-option>
+                        <ion-select-option value="Otro">Otro</ion-select-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-button style="margin-top: 2rem" [disabled]="!forma.valid || !fotoLista || guardando" expand="block" shape="round" type="submit">
+                    Guardar compra
+                    <ion-spinner *ngIf="guardando" name="dots"></ion-spinner>
+                </ion-button>
+            </form>
+        </div>
+    </div>
+
+</ion-content>
