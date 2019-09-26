@@ -1,0 +1,37 @@
+<div [ngSwitch]="calificacion">
+    <div *ngSwitchCase="0">
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+    </div>
+    <div *ngSwitchCase="calificacion > 0 && calificacion < 1">
+        <ion-icon color="warning" name="star-half"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+    </div>
+    <div *ngSwitchCase="calificacion === 1">
+        <ion-icon color="warning" name="star"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+    </div>
+    <div *ngSwitchCase="calificacion > 1 && calificacion < 2">
+        <ion-icon color="warning" name="star"></ion-icon>
+        <ion-icon color="warning" name="star-half"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+        <ion-icon color="warning" name="star-outline"></ion-icon>
+    </div>
+    <div *ngSwitchCase="5">
+        <ion-icon color="warning" name="star"></ion-icon>
+        <ion-icon color="warning" name="star"></ion-icon>
+        <ion-icon color="warning" name="star"></ion-icon>
+        <ion-icon color="warning" name="star"></ion-icon>
+        <ion-icon color="warning" name="star"></ion-icon>
+    </div>
+</div>

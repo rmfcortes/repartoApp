@@ -1,0 +1,22 @@
+.profile {
+    margin-top: 0vh;
+    padding-top: 2.5rem;
+    --background: var(--ion-color-primary);
+    background: var(--ion-color-primary);
+}
+
+.relleno {
+    width: 100vw;
+    height: 5rem;
+    background: var(--ion-color-primary);
+}
+
+.cuadro-opciones {
+    width: 80vw;
+    height: 40vh;
+    margin-left: 10vw;
+    margin-top: -2.5rem;
+    border-radius: 10px;
+    background: white;
+    --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.10);
+}
