@@ -1,0 +1,7 @@
+<ul>
+    <li [class]="msg.isMe ? 'him' : 'me'">
+        {{msg.msg}}
+        <span [class]="msg.isMe ? 'detalles el' : 'detalles yo'">{{msg.createdAt | date:'shortTime'}}</span>
+        <span [class]="msg.isMe ? 'detalles el' : 'detalles yo'" *ngIf="last">{{status}}</span>
+    </li>
+</ul>

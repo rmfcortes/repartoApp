@@ -1,0 +1,6 @@
+<ul>
+    <li [class]="msg.isMe ? 'him' : 'me'">
+        {{msg.msg}}
+        <span [class]="msg.isMe ? 'detalles el' : 'detalles yo'">{{msg.createdAt | date:'shortTime'}}</span>
+    </li>
+</ul>

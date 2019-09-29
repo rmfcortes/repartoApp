@@ -1,0 +1,57 @@
+.speech-bubble {
+    position: relative;
+    background: #00aabb;
+    border-radius: .4em;
+    margin-left: 1rem;
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 25%;
+        width: 0;
+        height: 0;
+        border: 76px solid transparent;
+        border-right-color: #00aabb;
+        border-left: 0;
+        border-bottom: 0;
+        margin-top: -38px;
+        margin-left: -76px;
+    }
+}
+
+.message {
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    white-space: pre-wrap;
+}
+
+.my-message {
+    background: var(--ion-color-light);
+}
+
+.other-message {
+    background: var(--ion-color-primary);
+    color: #fff;
+}
+
+.time {
+    color: #dfdfdf;
+    float: right;
+    font-size: small;
+}
+
+.message-input {
+    width: 100%;
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 10px;
+    background: #fff;
+    resize: none;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.msg-btn {
+    --padding-start: 0.5em;
+    --padding-end: 0.5em;
+}

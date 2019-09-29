@@ -1,0 +1,19 @@
+.profile {
+    --background: var(--ion-color-primary);
+    text-align: center;
+}
+
+.notification-button {
+    position: relative;
+}
+
+.notifications-badge {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    border-radius: 100%;
+}
+
+.boton-add {
+    --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.10);
+}

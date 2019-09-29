@@ -1,0 +1,7 @@
+<ul>
+    <li [class]="msg.isMe ? 'him' : 'me'">
+        {{msg.msg}} <br *ngIf="last">
+        <span class="estado" *ngIf="last && !msg.isMe && status"><strong>{{status | titlecase}}</strong></span>
+        <span [class]="msg.isMe ? 'detalles el' : 'detalles yo'">{{msg.createdAt | date:'shortTime'}}</span>
+    </li>
+</ul>

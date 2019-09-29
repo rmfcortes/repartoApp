@@ -1,0 +1,81 @@
+<ion-header no-border>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="regresar()">
+                <ion-icon color="primary" slot="icon-only" name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title color="primary">Cierre turno</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="4">
+                <div style="width: 100%; height: 100%; border-right: 1px solid #EAECED">
+                    <ion-item lines="none">
+                        <ion-label style="text-align: center;">
+                            <p style="color: var(--ion-color-medium);">Venta</p>
+                            <h2 style="color: var(--ion-color-primary);">{{venta | currency:'CAD':'symbol-narrow':'1.0-2'}}</h2>
+                        </ion-label>
+                    </ion-item>
+                </div>
+            </ion-col>
+            <ion-col size="4">
+                <ion-item lines="none">
+                    <ion-label>
+                        <div style="text-align: center; width: 100%; height: 100%">
+                            <p style="color: var(--ion-color-medium);">Balance</p>
+                            <h1>{{balance | currency:'CAD':'symbol-narrow':'1.0-2'}}</h1>
+                        </div>
+                    </ion-label>
+                </ion-item>
+            </ion-col>
+            <ion-col size="4">
+                <div style="text-align: center; width: 100%; height: 100%; border-left: 1px solid #EAECED">
+                    <ion-item lines="none">
+                        <ion-label style="text-align: center;">
+                            <p style="color: var(--ion-color-medium);">Gasto</p>
+                            <h2 style="color: var(--ion-color-warning);">{{gasto | currency:'CAD':'symbol-narrow':'1.0-2'}}</h2>
+                        </ion-label>
+                    </ion-item>
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="12">
+                <ion-list>
+                    <ion-item *ngFor="let viaje of viajes">
+                        <ion-label>
+                            <h1 style="color: var(--ion-color-primary);">Viaje {{viaje.viaje}}</h1>
+                            <h2>Venta: {{viaje.venta | currency:'CAD':'symbol-narrow':'1.0-2'}}</h2>
+                            <h2>Gasto: {{viaje.gasto | currency:'CAD':'symbol-narrow':'1.0-2'}}</h2>
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<ion-footer no-border>
+    <ion-toolbar>
+        <ion-item>
+            <ion-label>Entrega $
+                <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input (keyup.enter)="$event.target.blur();" type="number" required [(ngModel)]="efectivoEntreado" name="entregado"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Contraseña de supervisor
+                <ion-text color="danger">*</ion-text>
+            </ion-label>
+            <ion-input (keyup.enter)="$event.target.blur();" type="password" required [(ngModel)]="pass" name="pass"></ion-input>
+        </ion-item>
+        <ion-button [disabled]="pass.length === 0 ||  validando || !efectivoEntreado" expand="block" shape="round" (click)="evaluaDiferencia()">
+            Finalizar turno
+            <ion-spinner style="margin-left: 0.5rem" *ngIf="validando" name="dots"></ion-spinner>
+        </ion-button>
+    </ion-toolbar>
+</ion-footer>

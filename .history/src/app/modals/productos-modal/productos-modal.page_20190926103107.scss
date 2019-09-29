@@ -1,0 +1,16 @@
+.profile {
+    margin-top: 0vh;
+    --background: var(--ion-color-primary);
+    background: var(--ion-color-primary);
+    text-align: center;
+}
+
+.relleno {
+    width: 100vw;
+    height: 5rem;
+    background: var(--ion-color-primary);
+}
+
+.boton-add {
+    --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.10);
+}

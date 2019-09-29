@@ -1,0 +1,109 @@
+<ion-header no-border>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-button (click)="regresar()">
+                <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title *ngIf="cliente.origen === 'pedidos'" style="text-align: right; margin-right: 1rem" [color]="cliente.minutos > 15 ? 'primary' : cliente.minutos > 5 ? 'secondary' : 'danger'">
+            {{cliente.minutos}} : {{cliente.segundos}}
+        </ion-title>
+        <ion-buttons slot="end" *ngIf="cliente.origen === 'pedidos'">
+            <ion-button (click)="presentChat()">
+                <ion-icon slot="icon-only" name="paper-plane"></ion-icon>
+                <ion-badge slot="end" style="margin-left: 0.5rem" *ngIf="cliente.msgPend" color="danger">1</ion-badge>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ng-container *ngIf="prodsReady; else prodsTemplate">
+        <ion-item class="profile" lines="none" *ngIf="cliente.origen !== 'anonimo'">
+            <ion-label color="light">
+                <h1>{{usuario}}</h1>
+                <p>{{direccion}}</p>
+            </ion-label>
+        </ion-item>
+        <ion-card style="--background: #EBFAFF" *ngIf="cliente.origen !== 'anonimo'">
+            <ion-card-subtitle *ngIf="cliente.origen === 'pedidos'" style="text-align: right; margin-right: 1rem" [color]="cliente.minutos > 15 ? 'primary' : cliente.minutos > 5 ? 'secondary' : 'danger'">
+                {{cliente.minutos}} : {{cliente.segundos}}
+            </ion-card-subtitle>
+            <ion-card-title style="margin-left: 1.5rem">{{usuario}}</ion-card-title>
+            <ion-card-content>
+                {{direccion}}
+                <ion-item *ngIf="cliente.origen === 'pedidos'" lines="none" style="--background: transparent">
+                    <ion-button slot="end" (click)="presentChat()">
+                        CHAT
+                        <ion-icon color="light" slot="end" name="paper-plane"></ion-icon>
+                        <ion-badge slot="end" style="margin-left: 0.5rem" *ngIf="cliente.msgPend" color="danger">1</ion-badge>
+                    </ion-button>
+                </ion-item>
+            </ion-card-content>
+        </ion-card>
+        <ion-grid>
+            <ion-row *ngFor="let prod of productos">
+                <ion-col size="8">
+                    <ion-item lines="full">
+                        <ion-label class="ion-text-wrap">
+                            <h2>{{prod.nombre}}</h2>
+                            <p>Precio: {{prod.precio | currency:'CAD':'symbol-narrow':'1.0-2' }}</p>
+                            <p>Disponibles: {{prod.actual}}</p>
+                        </ion-label>
+                    </ion-item>
+                </ion-col>
+                <ion-col size="4" class="ion-align-self-center">
+                    <div>
+                        <ng-container *ngIf="!prod.agregado; else botones">
+                            <ion-button [disabled]="prod.actual === 0" expand="block" (click)="addProduct(prod)" class="boton-add" fill="clear" color="primary" size="small">
+                                Agregar
+                            </ion-button>
+                        </ng-container>
+                        <ng-template #botones>
+                            <ion-button expand="block" class="boton-add" fill="clear" color="primary" size="small">
+                                <ion-grid fixed class="ion-no-padding">
+                                    <ion-row class="ion-no-padding">
+                                        <ion-col class="ion-align-self-center ion-no-padding" size="3" (click)="minusProduct(prod)">
+                                            -
+                                        </ion-col>
+                                        <ion-col class="ion-align-self-center ion-no-padding" size="6">
+                                            <ion-input class="inpu" type="number" [(ngModel)]="prod.cantidad" [readonly]="true"></ion-input>
+                                        </ion-col>
+
+                                        <ion-col class="ion-align-self-center ion-no-padding" size="3" (click)="plusProduct(prod)">
+                                            <strong>+</strong>
+                                        </ion-col>
+                                    </ion-row>
+                                </ion-grid>
+                            </ion-button>
+                        </ng-template>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </ng-container>
+    <ng-template #prodsTemplate>
+        <ion-item *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11]">
+            <ion-label>
+                <h3>
+                    <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+                </h3>
+                <p>
+                    <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                </p>
+                <p>
+                    <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </p>
+            </ion-label>
+        </ion-item>
+    </ng-template>
+</ion-content>
+
+<ion-footer no-border *ngIf="prodsReady">
+    <ion-toolbar>
+        <ion-button [disabled]="cuenta === 0" expand="block" shape="round" (click)="cerrarVenta()">
+            Total {{cuenta | currency:'CAD':'symbol-narrow':'1.0-2' }}
+            <ion-spinner style="margin-left: 0.5rem" *ngIf="validando" name="dots"></ion-spinner>
+        </ion-button>
+    </ion-toolbar>
+</ion-footer>

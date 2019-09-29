@@ -1,0 +1,56 @@
+    $color_1: #000;
+$background_color_1: gold;
+$background_color_2: rosybrown;
+.chatBubble {
+    .message {
+        font-size: medium;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+    .message-detail {
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    .chat-bubble {
+        border-radius: 5px;
+        display: inline-block;
+        padding: 10px 18px;
+        position: relative;
+        margin: 10px;
+        max-width: 80%;
+        &:before {
+            content: "\00a0";
+            display: block;
+            height: 16px;
+            width: 9px;
+            position: absolute;
+            bottom: -7.5px;
+        }
+    }
+    .chat-bubble-left {
+        background-color: $background_color_1;
+        float: left;
+        margin-left: 45px;
+        &:before {
+            background-color: $background_color_1;
+            left: 10px;
+            transform: rotate(70deg) skew(5deg);
+        }
+    }
+    .chat-bubble-right {
+        background-color: $background_color_2;
+        color: $color_1;
+        float: right;
+        margin-right: 45px;
+        a.autolinker {
+            color: $color_1;
+            font-weight: bold;
+        }
+    }
+    .chat-bubble.right {
+        &:before {
+            background-color: $background_color_2;
+            right: 10px;
+            transform: rotate(118deg) skew(-5deg);
+        }
+    }
