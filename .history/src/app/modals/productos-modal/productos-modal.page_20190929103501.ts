@@ -200,7 +200,7 @@ export class ProductosModalPage implements OnInit {
   }
 
   llamar() {
-    this.callNumber.callNumber(this.telefono, true)
+    this.callNumber.callNumber(this.negocio.telefono, true)
       .then(res => console.log('Launched dialer!', res))
       .catch(err => console.error(err));
   }

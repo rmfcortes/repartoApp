@@ -13,11 +13,14 @@
                 <ion-title [color]="cliente.minutos < 20 ? 'primary' : cliente.minutos < 30 ? 'warning' : 'danger'">00:{{cliente.minutos | number : '2.0-0'}}</ion-title>
             </ng-template>
         </div>
-        <ion-buttons slot="end">
-            <ion-button (click)="llamar()" *ngIf="telefono">
+        <ion-buttons class="notification-button" slot="end" *ngIf="telefono">
+            <ion-button (click)="llamar()">
                 <ion-icon slot="icon-only" name="call"></ion-icon>
+                <ion-badge class="notifications-badge" *ngIf="cliente.msgPend" color="danger">1</ion-badge>
             </ion-button>
-            <ion-button (click)="presentChat()" class="notification-button" *ngIf="cliente.origen === 'pedidos'">
+        </ion-buttons>
+        <ion-buttons class="notification-button" slot="end" *ngIf="cliente.origen === 'pedidos'">
+            <ion-button (click)="presentChat()">
                 <ion-icon slot="icon-only" name="paper-plane"></ion-icon>
                 <ion-badge class="notifications-badge" *ngIf="cliente.msgPend" color="danger">1</ion-badge>
             </ion-button>

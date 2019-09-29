@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -23,6 +23,7 @@ import { EnterAnimation } from 'src/app/animations/enter';
 import { LeaveAnimation } from 'src/app/animations/leave';
 
 import { Colaborador } from 'src/app/interfaces/colaborador.interface';
+import { ProductoCarga, ResumenViaje } from 'src/app/interfaces/producto.interface';
 import { FinViajePage } from 'src/app/modals/fin-viaje/fin-viaje.page';
 
 @Component({
@@ -30,7 +31,7 @@ import { FinViajePage } from 'src/app/modals/fin-viaje/fin-viaje.page';
   templateUrl: './ruta.page.html',
   styleUrls: ['./ruta.page.scss'],
 })
-export class RutaPage implements OnInit {
+export class RutaPage implements OnInit, OnDestroy {
 
   colaborador: Colaborador;
   calificaciones: number;
@@ -49,6 +50,8 @@ export class RutaPage implements OnInit {
   };
   ubicacionReady = false;
   ubicacionSub: Subscription;
+
+  salir = false;
 
   url = 'https://repartoapp-50540.firebaseapp.com';
 
@@ -230,19 +233,20 @@ export class RutaPage implements OnInit {
     modal.onWillDismiss().then(resp => {
       if (resp.data) {
         this.clienteService.stopCount();
-        this.salir();
         this.router.navigate(['/inicio']);
       }
     });
     return await modal.present();
   }
 
-  salir() {
+  ngOnDestroy(): void {
+    console.log('Detener ubicacion');
     if (this.msnSub) { this.msnSub.unsubscribe(); }
     if (this.colabSub) { this.colabSub.unsubscribe(); }
     if (this.pedidosSub) { this.pedidosSub.unsubscribe(); }
     if (this.ubicacionSub) { this.ubicacionSub.unsubscribe(); }
     if (this.pedidosNotActive) { this.clienteService.hayPedidosNot().query.ref.off(); }
+    this.salir = true;
     this.ubicacionService.detenerUbicacion();
   }
 

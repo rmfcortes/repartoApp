@@ -1,8 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
-
-import { CallNumber } from '@ionic-native/call-number/ngx';
-
 import { ChatPage } from '../chat/chat.page';
 
 import { VentaService } from 'src/app/services/venta.service';
@@ -43,7 +40,6 @@ export class ProductosModalPage implements OnInit {
   telefono = '';
 
   constructor(
-    private callNumber: CallNumber,
     private toastController: ToastController,
     private modalController: ModalController,
     private clienteService: ClientesService,
@@ -197,12 +193,6 @@ export class ProductosModalPage implements OnInit {
       this.cliente.msgPend = false;
     });
     return await modal.present();
-  }
-
-  llamar() {
-    this.callNumber.callNumber(this.telefono, true)
-      .then(res => console.log('Launched dialer!', res))
-      .catch(err => console.error(err));
   }
 
   // Salida
