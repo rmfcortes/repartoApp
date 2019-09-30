@@ -9,7 +9,7 @@ export const environment = {
     messagingSenderId: '944535191108',
     appId: '1:944535191108:web:c9cba701385efd3cad4611'
   },
-  mapsApiKey : 'AIzaSyAZcXe-eNYvKDUFzpTHcQrmInLGw-BTnbA',
+  mapsApiKey : 'AIzaSyBFJ19-ZZzdW8ftMiMJcgf4eoaBCoCEsS0',
   oneSignalID : '0450c0cf-ee73-4fcf-ac05-53a355468933',
   senderID : '944535191108'
 };
