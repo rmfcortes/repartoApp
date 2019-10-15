@@ -22,31 +22,40 @@
         "@angular/platform-browser": "~8.1.2",
         "@angular/platform-browser-dynamic": "~8.1.2",
         "@angular/router": "~8.1.2",
-        "@ionic-native/background-geolocation": "^5.14.0",
+        "@ionic-native/android-permissions": "^5.15.0",
+        "@ionic-native/background-mode": "^5.15.0",
         "@ionic-native/barcode-scanner": "^5.14.0",
         "@ionic-native/call-number": "^5.14.0",
         "@ionic-native/camera": "^5.14.0",
         "@ionic-native/core": "^5.0.0",
+        "@ionic-native/diagnostic": "^5.15.0",
+        "@ionic-native/geolocation": "^5.15.0",
         "@ionic-native/google-maps": "^5.0.0-beta.27",
+        "@ionic-native/location-accuracy": "^5.15.0",
+        "@ionic-native/network": "^5.15.0",
         "@ionic-native/onesignal": "^5.14.0",
         "@ionic-native/social-sharing": "^5.14.0",
         "@ionic-native/splash-screen": "^5.0.0",
         "@ionic-native/status-bar": "^5.0.0",
         "@ionic/angular": "^4.7.1",
         "@ionic/storage": "^2.2.0",
-        "@mauron85/cordova-plugin-background-geolocation": "3.0.6",
         "call-number": "1.0.1",
         "cordova-android": "7.1.4",
         "cordova-android-support-gradle-release": "^3.0.1",
+        "cordova-plugin-android-permissions": "1.0.2",
+        "cordova-plugin-background-mode": "0.7.3",
         "cordova-plugin-camera": "4.1.0",
         "cordova-plugin-device": "^2.0.2",
+        "cordova-plugin-geolocation": "4.0.2",
         "cordova-plugin-ionic-keyboard": "^2.2.0",
         "cordova-plugin-ionic-webview": "^4.1.1",
-        "cordova-plugin-mauron85-background-geolocation": "@mauron85/cordova-plugin-background-geolocation@~3.0.6",
+        "cordova-plugin-network-information": "2.0.2",
+        "cordova-plugin-request-location-accuracy": "2.3.0",
         "cordova-plugin-splashscreen": "^5.0.2",
         "cordova-plugin-statusbar": "^2.4.2",
         "cordova-plugin-whitelist": "^1.3.3",
         "cordova-plugin-x-socialsharing": "5.6.0",
+        "cordova.plugins.diagnostic": "5.0.1",
         "core-js": "^2.5.4",
         "es6-promise-plugin": "4.2.2",
         "firebase": "^6.6.1",
@@ -56,7 +65,8 @@
         "phonegap-plugin-barcodescanner": "8.1.0",
         "rxjs": "~6.5.1",
         "tslib": "^1.9.0",
-        "zone.js": "~0.9.1"
+        "zone.js": "~0.9.1",
+        "mx.ferreyra.callnumber": "~0.0.2"
     },
     "devDependencies": {
         "@angular-devkit/architect": "~0.801.2",
@@ -96,16 +106,6 @@
                 "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
             },
             "cordova-plugin-ionic-keyboard": {},
-            "cordova-plugin-mauron85-background-geolocation": {
-                "GOOGLE_PLAY_SERVICES_VERSION": "11+",
-                "ANDROID_SUPPORT_LIBRARY_VERSION": "26+",
-                "ICON": "@mipmap/icon",
-                "SMALL_ICON": "@mipmap/icon",
-                "ACCOUNT_NAME": "@string/app_name",
-                "ACCOUNT_LABEL": "@string/app_name",
-                "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
-                "CONTENT_AUTHORITY": "$PACKAGE_NAME"
-            },
             "cordova-android-support-gradle-release": {
                 "ANDROID_SUPPORT_VERSION": "27.+"
             },
@@ -119,7 +119,17 @@
             "cordova-plugin-x-socialsharing": {
                 "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
             },
-            "mx.ferreyra.callnumber": {}
+            "mx.ferreyra.callnumber": {},
+            "cordova-plugin-geolocation": {},
+            "cordova-plugin-android-permissions": {},
+            "cordova-plugin-background-mode": {},
+            "cordova.plugins.diagnostic": {
+                "ANDROID_SUPPORT_VERSION": "28.+"
+            },
+            "cordova-plugin-network-information": {},
+            "cordova-plugin-request-location-accuracy": {
+                "PLAY_SERVICES_LOCATION_VERSION": "16.+"
+            }
         },
         "platforms": [
             "android"

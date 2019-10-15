@@ -1,0 +1,21 @@
+<ion-content class="background">
+
+    <div class="formulario">
+        <ion-img style="width: 100%" src="../../assets/img/logo.png" alt=""></ion-img>
+        <form #forma="ngForm" (submit)="ingresarConCorreo()">
+            <ion-item>
+                <ion-label color="medium" position="floating">Correo</ion-label>
+                <ion-input (keyup.enter)="$event.target.blur();" [(ngModel)]="correo" type="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label color="medium" position="floating">Contraseña</ion-label>
+                <ion-input (keyup.enter)="$event.target.blur();" type="password" required [(ngModel)]="pass" name="telefono" minlength="5"></ion-input>
+            </ion-item>
+            <ion-button style="margin-top: 2rem" [disabled]="!forma.valid" expand="block" shape="round" type="submit">
+                Ingresar
+            </ion-button>
+        </form>
+        <p>Test 0.02</p>
+    </div>
+
+</ion-content>
