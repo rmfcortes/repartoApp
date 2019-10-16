@@ -46,7 +46,6 @@ export class CierreService {
           valida: cierre.valida
         };
         await this.db.object(`carga/${this.uid}/sumario`).update(resumen);
-        resolve(true);
       } catch (error) {
         reject(error);
       }

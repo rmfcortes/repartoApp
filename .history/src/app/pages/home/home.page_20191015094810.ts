@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, OnInit } from '@angular/core';
 import { AlertController, ToastController, ModalController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import { PermissionsService } from 'src/app/services/permissions.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, AfterViewInit, OnDestroy {
 
   productos: Producto[] = [];
 
@@ -31,10 +31,13 @@ export class HomePage implements OnInit {
 
   validando = false;
 
+  backButtonSubscription: Subscription;
+
   isConnected = true;
 
   constructor(
     private router: Router,
+    private platform: Platform,
     private alertCtrl: AlertController,
     private modalController: ModalController,
     private toastController: ToastController,
@@ -161,12 +164,22 @@ export class HomePage implements OnInit {
   async logOut() {
     await this.authService.actualizarStatus('Inactivo');
     await this.authService.logout();
+    if (this.backButtonSubscription) { this.backButtonSubscription.unsubscribe(); }
     this.router.navigate(['/login']);
-    const nombre = 'app';
-    navigator[nombre].exitApp();
   }
 
   // Auxiliares
+
+  ngAfterViewInit() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      console.log('No dejar regresar');
+      return;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.backButtonSubscription) { this.backButtonSubscription.unsubscribe(); }
+  }
 
   async presentAlertSalida(title, msg) {
     const alert = await this.alertCtrl.create({

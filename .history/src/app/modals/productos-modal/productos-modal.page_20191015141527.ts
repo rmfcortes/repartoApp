@@ -72,10 +72,13 @@ export class ProductosModalPage implements OnInit {
         case 'registrados':
           this.setDatos(this.cliente);
           break;
-        }
+        case 'anonimo':
+          this.setDatosAnom();
+          break;
+      }
       await this.setPrecios();
     } else {
-      this.setDatosAnom();
+
     }
     this.prodsReady = true;
   }
@@ -102,11 +105,7 @@ export class ProductosModalPage implements OnInit {
           } else {
             this.productos[i].cantidad = producto.cantidad;
           }
-          if (this.cliente.precio && this.cliente.precio[producto.id]) {
-            this.cuenta += producto.cantidad * this.cliente.precio[producto.id];
-          } else {
-            this.cuenta += producto.cantidad * this.productos[i].precio;
-          }
+          this.cuenta += producto.cantidad * this.productos[i].precio;
         }
       });
       resolve();
@@ -119,7 +118,7 @@ export class ProductosModalPage implements OnInit {
     return new Promise(async (resolve, reject) => {
       const cliente: any = await this.clienteService.getCliente(this.cliente.cliente);
       this.cliente.precio = cliente.precio || null;
-      this.usuario = this.cliente.pedido.usuario || cliente.nombre;
+      this.usuario = cliente.nombre;
       this.telefono = cliente.telefono || '';
       console.log(cliente);
       resolve(cliente);
@@ -185,6 +184,9 @@ export class ProductosModalPage implements OnInit {
     this.ventaService.guardaSoloCargaEnStorage(this.productos);
     await this.ventaService.updateCargaDB(this.productos);
     this.ventaService.pushVenta(vendidos, this.datosVenta, this.cuenta);
+    if (this.cliente.cliente) {
+      await this.clienteService.updateLastCompra(this.cliente.cliente);
+    }
     this.presentToast('Venta guardada');
     this.validando = false;
     this.modalController.dismiss(true);

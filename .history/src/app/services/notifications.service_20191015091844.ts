@@ -38,8 +38,8 @@ export class NotificationsService {
 
       this.oneSignal.handleNotificationReceived().subscribe(data => {
         this.ngZone.run(() => {
-          this.badge.set(1);
           if (data.payload.additionalData.mensaje) {
+            this.badge.set(1);
             this.presentToast('Nuevo mensaje recibido');
           }
           if (data.payload.additionalData.pedido) {
@@ -54,6 +54,7 @@ export class NotificationsService {
   }
 
   setSeen(id) {
+    this.badge.clear();
     this.db.object(`pedidos/${this.uid}/${id}`).update({msgPend: false});
   }
 
@@ -63,9 +64,5 @@ export class NotificationsService {
       duration: 1500
     });
     toast.present();
-  }
-
-  clearBadge() {
-    this.badge.clear();
   }
 }

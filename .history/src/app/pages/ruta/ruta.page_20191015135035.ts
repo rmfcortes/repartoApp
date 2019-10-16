@@ -189,6 +189,7 @@ export class RutaPage implements OnInit, OnDestroy {
       lat: this.ubicacion.lat,
       lng: this.ubicacion.lng
     };
+    console.log(cliente);
     this.presentProductos(cliente, 'anonimo');
   }
 
@@ -224,7 +225,8 @@ export class RutaPage implements OnInit, OnDestroy {
       .then(barcodeData => {
         const resp = JSON.stringify(barcodeData);
         const data = JSON.parse(resp);
-        if (data.text) {
+        console.log(data);
+        if (data) {
           const cliente = {
             cliente: data.text,
           };

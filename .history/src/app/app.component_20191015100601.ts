@@ -50,6 +50,9 @@ export class AppComponent {
         this.router.navigate(['/login']);
       }
       this.splashScreen.hide();
+      this.platform.pause.subscribe(e => {
+        console.log('App was killed');
+      });
     });
   }
 

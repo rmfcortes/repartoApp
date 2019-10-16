@@ -22,8 +22,8 @@ import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 export class UbicacionService {
 
   public ubicacion = new BehaviorSubject({
-    lat: 20.61,
-    lng: -103.42
+    lat: 20.622894,
+    lng: -103.415830
   });
 
   uid: string;
@@ -155,6 +155,27 @@ export class UbicacionService {
         console.log(err);
         });
       });
+  }
+
+  getPosition(): Promise<Geoposition> {
+    return new Promise((resolve, reject) => {
+      this.geolocation.getCurrentPosition(this.options)
+        .then(async (position: Geoposition) => {
+          this.ngZone.run(async () => {
+            console.log(position);
+            if (position.coords.accuracy > 25) {
+              this.getPosition();
+              return;
+            } else {
+              resolve(position);
+            }
+          });
+        }).catch(err => {
+          this.ngZone.run(() => {
+          console.log(err);
+          });
+        });
+    });
   }
 
   watchPosition() {

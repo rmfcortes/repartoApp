@@ -22,6 +22,7 @@
     <platform name="android">
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
+            <service android:name="com.myapp.MyService" android:stopWithTask="false" />
         </edit-config>
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
         <allow-intent href="market:*" />
@@ -129,6 +130,5 @@
     <plugin name="cordova-plugin-request-location-accuracy" spec="2.3.0">
         <variable name="PLAY_SERVICES_LOCATION_VERSION" value="16.+" />
     </plugin>
-    <plugin name="cordova-plugin-badge" spec="0.8.8" />
     <engine name="android" spec="7.1.4" />
 </widget>

@@ -29,6 +29,7 @@ export class AppComponent {
         document.addEventListener('backbutton', (event) => {
           event.preventDefault();
           event.stopPropagation();
+          console.log('hello');
         }, false);
       });
       this.statusBar.styleDefault();
@@ -50,6 +51,9 @@ export class AppComponent {
         this.router.navigate(['/login']);
       }
       this.splashScreen.hide();
+      this.platform.pause.subscribe(e => {
+        console.log('App was killed');
+      });
     });
   }
 

@@ -1,9 +1,9 @@
 <ion-header no-border>
     <ion-toolbar>
         <ng-container *ngIf="verImagen; else imgBtnTemplate">
-            <ion-buttons slot="star">
+            <ion-buttons slot="end">
                 <ion-button (click)="verImagen = false">
-                    <ion-icon color="primary" slot="icon-only" name="arrow-back"></ion-icon>
+                    <ion-icon color="primary" slot="icon-only" name="close"></ion-icon>
                 </ion-button>
             </ion-buttons>
         </ng-container>
@@ -13,8 +13,9 @@
                     <ion-icon color="primary" slot="icon-only" name="close"></ion-icon>
                 </ion-button>
             </ion-buttons>
-            <ion-title color="primary">Resumen {{tipo}}</ion-title>
         </ng-template>
+
+        <ion-title color="primary">Resumen {{tipo}}</ion-title>
     </ion-toolbar>
 </ion-header>
 

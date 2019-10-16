@@ -102,7 +102,6 @@ export class MapaPage implements OnInit {
 
   async getClientesRegistrados() {
     this.clientesDesatendidos = await this.clienteService.getClientesDesatendidos(this.lapso);
-    console.log(this.clientesDesatendidos);
     this.pines = [];
     if (this.clientesDesatendidos && this.clientesDesatendidos.length > 0) {
       this.clientesDesatendidos = this.clientesDesatendidos.filter(c => c.ultimaCompra);

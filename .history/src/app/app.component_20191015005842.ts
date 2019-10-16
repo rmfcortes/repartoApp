@@ -25,12 +25,6 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(async () => {
-      this.platform.backButton.subscribeWithPriority(9999, () => {
-        document.addEventListener('backbutton', (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-        }, false);
-      });
       this.statusBar.styleDefault();
       const user = await this.authService.revisaFireAuth();
       if (!user) {
@@ -50,6 +44,9 @@ export class AppComponent {
         this.router.navigate(['/login']);
       }
       this.splashScreen.hide();
+      this.platform.pause.subscribe(e => {
+        console.log('App was killed');
+      });
     });
   }
 

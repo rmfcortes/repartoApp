@@ -65,12 +65,10 @@
                         </ion-label>
                         <ion-icon (click)="presentPinSolo(cliente.cliente)" color="primary" slot="start" name="pin"></ion-icon>
                     </ion-item>
-                    <ion-item *ngIf="clientesDesatendidos.length === 0" lines="none">
-                        <ion-label color="medium" style="text-align: center;" class="ion-text-wrap">
-                            No hay clientes que mostrar. Intenta cambiando el rango de días de búsqueda.
-                        </ion-label>
-                    </ion-item>
                 </ion-list>
+                <ion-label color="medium" class="ion-padding" *ngIf="clientesDesatendidos.length === 0">
+                    No hay clientes que mostrar. Intenta cambiando el rango de días de búsqueda.
+                </ion-label>
             </div>
             <div *ngSwitchCase="'mapa'">
                 <agm-map *ngIf="ubicacionReady" [latitude]="ubicacion.lat" [longitude]="ubicacion.lng" [disableDefaultUI]="true" [streetViewControl]="false" [zoomControl]="false" [fitBounds]="true" fitBoundsPadding="bottom: 10; left: 10; right: 10; top: 10" maxZoom="17">

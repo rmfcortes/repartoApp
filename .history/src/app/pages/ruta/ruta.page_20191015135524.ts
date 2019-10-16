@@ -224,6 +224,7 @@ export class RutaPage implements OnInit, OnDestroy {
       .then(barcodeData => {
         const resp = JSON.stringify(barcodeData);
         const data = JSON.parse(resp);
+        console.log(data);
         if (data.text) {
           const cliente = {
             cliente: data.text,

@@ -51,13 +51,14 @@ export class ComprasService {
   }
 
   guardaDatosCompra(compra: Compra, url) {
+    console.log(url);
     return new Promise(async (resolve, reject) => {
       compra.fecha = new Date();
       const fecha = this.datePipe.transform(compra.fecha, 'yyyy-MM-dd');
       compra.url = url;
       compra.viaje = await this.ventaService.getViaje();
       await this.db.object(`compras/${this.uid}/${fecha}/${this.idCompra}`).set(compra);
-      await this.db.object(`ventas/${fecha}/${this.uid}/detalles/${compra.viaje}/gasto`).query.ref
+      await this.db.object(`ventas/${fecha}/${this.uid}/detalles/gasto/${compra.viaje}`).query.ref
         .transaction( count => count ? count += compra.total : compra.total);
       await this.db.object(`carga/${this.uid}/sumario/gasto`).query.ref
         .transaction( count => count ? count += compra.total : compra.total);

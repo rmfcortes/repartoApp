@@ -22,8 +22,8 @@ import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 export class UbicacionService {
 
   public ubicacion = new BehaviorSubject({
-    lat: 20.61,
-    lng: -103.42
+    lat: 20.622894,
+    lng: -103.415830
   });
 
   uid: string;
@@ -96,8 +96,12 @@ export class UbicacionService {
   setBackMode() {
     this.backSubscription =  this.backgroundMode.on('activate').subscribe(() => {
       this.ngZone.run(() => {
+        console.log('Activado');
         this.backgroundMode.disableWebViewOptimizations();
-        if (!this.backInterval) {
+        if (this.backInterval) {
+          console.log('Back interval activo');
+          // Intervalo ya está activo
+        } else {
           this.backInterval = setInterval(() => {
             console.log('En Back');
             if (this.wathSubscription) { this.wathSubscription.unsubscribe(); }
@@ -111,6 +115,7 @@ export class UbicacionService {
 
   setFrontMode() {
     this.deActBackSubscription = this.backgroundMode.on('deactivate').subscribe(async () => {
+      console.log('En primer plano');
       clearInterval(this.backInterval);
       this.backInterval = null;
       const resp = await this.permissionService.isGpsTurnedOn();
@@ -127,13 +132,10 @@ export class UbicacionService {
         this.backgroundMode.isScreenOff(isOff => {
           if (!isOff) {
             this.permissionService.askToTurnOnGPS();
-            this.db.list('test/gps/off').push(Date.now());
           } else {
             this.db.list('test/gps').push('GPS signal was lost');
           }
         });
-      } else {
-        this.db.list('test/gps/on').push(Date.now());
       }
     });
   }
@@ -157,6 +159,26 @@ export class UbicacionService {
       });
   }
 
+  getPosition(): Promise<Geoposition> {
+    return new Promise((resolve, reject) => {
+      this.geolocation.getCurrentPosition(this.options)
+        .then(async (position: Geoposition) => {
+          this.ngZone.run(async () => {
+            if (position.coords.accuracy > 22) {
+              this.getPosition();
+              return;
+            } else {
+              resolve(position);
+            }
+          });
+        }).catch(err => {
+          this.ngZone.run(() => {
+          console.log(err);
+          });
+        });
+    });
+  }
+
   watchPosition() {
     if (this.wathSubscription) {
       return;
@@ -171,6 +193,8 @@ export class UbicacionService {
   // Compara si no es una ubicación erronea
 
   async comparaLoc(position: Geoposition) {
+    console.log(position);
+    this.db.list(`test/${this.fecha}/accuray`).push(position.coords.accuracy);
     if (position.coords.accuracy > 25) {
       return;
     }

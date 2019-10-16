@@ -162,8 +162,6 @@ export class HomePage implements OnInit {
     await this.authService.actualizarStatus('Inactivo');
     await this.authService.logout();
     this.router.navigate(['/login']);
-    const nombre = 'app';
-    navigator[nombre].exitApp();
   }
 
   // Auxiliares

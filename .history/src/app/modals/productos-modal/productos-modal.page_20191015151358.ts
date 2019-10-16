@@ -185,6 +185,9 @@ export class ProductosModalPage implements OnInit {
     this.ventaService.guardaSoloCargaEnStorage(this.productos);
     await this.ventaService.updateCargaDB(this.productos);
     this.ventaService.pushVenta(vendidos, this.datosVenta, this.cuenta);
+    if (this.cliente.cliente) {
+      await this.clienteService.updateLastCompra(this.cliente.cliente);
+    }
     this.presentToast('Venta guardada');
     this.validando = false;
     this.modalController.dismiss(true);

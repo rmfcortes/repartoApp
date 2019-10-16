@@ -185,9 +185,10 @@ export class RutaPage implements OnInit, OnDestroy {
   }
 
   async setClienteAnonimo() {
+    const ubicacion: Geoposition = await this.ubicacionService.getPosition();
     const cliente = {
-      lat: this.ubicacion.lat,
-      lng: this.ubicacion.lng
+      lat: ubicacion.coords.latitude,
+      lng: ubicacion.coords.longitude
     };
     this.presentProductos(cliente, 'anonimo');
   }
@@ -224,7 +225,7 @@ export class RutaPage implements OnInit, OnDestroy {
       .then(barcodeData => {
         const resp = JSON.stringify(barcodeData);
         const data = JSON.parse(resp);
-        if (data.text) {
+        if (data) {
           const cliente = {
             cliente: data.text,
           };

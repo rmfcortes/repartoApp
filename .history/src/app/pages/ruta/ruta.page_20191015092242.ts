@@ -1,5 +1,5 @@
-import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
-import { ModalController, AlertController, ToastController } from '@ionic/angular';
+import { Component, OnInit, NgZone, OnDestroy, AfterViewInit } from '@angular/core';
+import { ModalController, AlertController, ToastController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -33,7 +33,7 @@ import { PermissionsService } from 'src/app/services/permissions.service';
   templateUrl: './ruta.page.html',
   styleUrls: ['./ruta.page.scss'],
 })
-export class RutaPage implements OnInit, OnDestroy {
+export class RutaPage implements OnInit, AfterViewInit, OnDestroy {
 
   colaborador: Colaborador;
   calificaciones: number;
@@ -53,6 +53,8 @@ export class RutaPage implements OnInit, OnDestroy {
   ubicacionReady = false;
   ubicacionSub: Subscription;
 
+  backButtonSubscription: Subscription;
+
   url = 'https://repartoapp-50540.firebaseapp.com';
 
   pedidos: number;
@@ -68,6 +70,7 @@ export class RutaPage implements OnInit, OnDestroy {
   constructor(
     private ngZone: NgZone,
     private router: Router,
+    private platform: Platform,
     private socialSharing: SocialSharing,
     private alertCtrl: AlertController,
     private barcodeScanner: BarcodeScanner,
@@ -185,9 +188,10 @@ export class RutaPage implements OnInit, OnDestroy {
   }
 
   async setClienteAnonimo() {
+    const ubicacion: Geoposition = await this.ubicacionService.getPosition();
     const cliente = {
-      lat: this.ubicacion.lat,
-      lng: this.ubicacion.lng
+      lat: ubicacion.coords.latitude,
+      lng: ubicacion.coords.longitude
     };
     this.presentProductos(cliente, 'anonimo');
   }
@@ -224,7 +228,7 @@ export class RutaPage implements OnInit, OnDestroy {
       .then(barcodeData => {
         const resp = JSON.stringify(barcodeData);
         const data = JSON.parse(resp);
-        if (data.text) {
+        if (data) {
           const cliente = {
             cliente: data.text,
           };
@@ -274,6 +278,7 @@ export class RutaPage implements OnInit, OnDestroy {
     if (this.pedidosSub) { this.pedidosSub.unsubscribe(); }
     if (this.ubicacionSub) { this.ubicacionSub.unsubscribe(); }
     if (this.pedidosNotActive) { this.clienteService.hayPedidosNot().query.ref.off(); }
+    if (this.backButtonSubscription) { this.backButtonSubscription.unsubscribe(); }
     this.ubicacionService.detenerUbicacion();
   }
 
@@ -283,10 +288,17 @@ export class RutaPage implements OnInit, OnDestroy {
     if (this.pedidosSub) { this.pedidosSub.unsubscribe(); }
     if (this.ubicacionSub) { this.ubicacionSub.unsubscribe(); }
     if (this.pedidosNotActive) { this.clienteService.hayPedidosNot().query.ref.off(); }
+    if (this.backButtonSubscription) { this.backButtonSubscription.unsubscribe(); }
     this.ubicacionService.detenerUbicacion();
   }
 
   // Auxiliares
+
+  ngAfterViewInit() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      return;
+    });
+  }
 
   async presentTelPrompt() {
     const alert = await this.alertCtrl.create({
