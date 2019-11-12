@@ -58,7 +58,7 @@
                     </div>
                     <ion-item *ngFor="let cliente of clientesDesatendidos" detail>
                         <ion-label (click)="presentProductos(cliente)">
-                            <h2>{{cliente.nombre}}</h2>
+                            <h2>{{cliente.nombre || 'Anónimo'}}</h2>
                             <p class="ion-text-wrap">{{cliente.direccion.direccion}}</p>
                             <p style="color: #4c8dff">Última compra hace: {{cliente.dias | number : '1.0-0'}} días</p>
                             <p style="color: var(--ion-color-primary);">A {{cliente.distancia | number : '1.0-2'}}kms</p>

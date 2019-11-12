@@ -40,7 +40,7 @@
                             </ng-template>
                             <p class="ion-text-wrap">{{cliente.pedido.direccion.direccion}}</p>
                         </ion-label>
-                        <ion-icon (click)="presentPinSolo(cliente.cliente)" color="primary" slot="start" name="pin"></ion-icon>
+                        <ion-icon (click)="presentPinSolo(cliente.pedido.id)" color="primary" slot="start" name="pin"></ion-icon>
                         <ng-container *ngIf="cliente.horas; else timeTemplate">
                             <ion-badge color="danger">{{cliente.horas | number : '2.0-0'}}:{{cliente.minutos | number : '2.0-0'}}</ion-badge>
                         </ng-container>
@@ -58,18 +58,23 @@
                     </div>
                     <ion-item *ngFor="let cliente of clientesDesatendidos" detail>
                         <ion-label (click)="presentProductos(cliente)">
-                            <h2>{{cliente.nombre}}</h2>
-                            <p class="ion-text-wrap">{{cliente.direccion}}</p>
+                            <h2>{{cliente.nombre || 'Anónimo'}}</h2>
+                            <p class="ion-text-wrap">{{cliente.direccion.direccion}}</p>
                             <p style="color: #4c8dff">Última compra hace: {{cliente.dias | number : '1.0-0'}} días</p>
                             <p style="color: var(--ion-color-primary);">A {{cliente.distancia | number : '1.0-2'}}kms</p>
                         </ion-label>
                         <ion-icon (click)="presentPinSolo(cliente.cliente)" color="primary" slot="start" name="pin"></ion-icon>
                     </ion-item>
+                    <ion-item *ngIf="clientesDesatendidos.length === 0" lines="none">
+                        <ion-label color="medium" style="text-align: center;" class="ion-text-wrap">
+                            No hay clientes que mostrar. Intenta cambiando el rango de días de búsqueda.
+                        </ion-label>
+                    </ion-item>
                 </ion-list>
             </div>
             <div *ngSwitchCase="'mapa'">
-                <agm-map *ngIf="ubicacionReady" [latitude]="ubicacion.lat" [longitude]="ubicacion.lng" [disableDefaultUI]="true" [streetViewControl]="false" [zoomControl]="false" [fitBounds]="true" fitBoundsPadding="bottom: 10; left: 10; right: 10; top: 10">
-                    <agm-marker [agmFitBounds]="true" [iconUrl]='{"url": icon,"scaledSize": {"height": 30, "width": 30}}' [latitude]="ubicacion.lat" [longitude]="ubicacion.lng"></agm-marker>
+                <agm-map *ngIf="ubicacionReady" [latitude]="ubicacion.lat" [longitude]="ubicacion.lng" [disableDefaultUI]="true" [streetViewControl]="false" [zoomControl]="false" [fitBounds]="true" fitBoundsPadding="bottom: 10; left: 10; right: 10; top: 10" maxZoom="17">
+                    <agm-marker [agmFitBounds]="true" [iconUrl]='{"url": icon,"scaledSize": {"height": 80, "width": 60}}' [latitude]="ubicacion.lat" [longitude]="ubicacion.lng"></agm-marker>
                     <ng-container *ngIf="todosPines; else pinTemplate">
                         <agm-marker *ngFor="let pin of pines; let i = index" [agmFitBounds]="true" (markerClick)="pinSelected(pin)" [iconUrl]='{"url": casa,"scaledSize": {"height": 80, "width": 60}}' [latitude]="pin.lat" [longitude]="pin.lng" [animation]="'DROP'"></agm-marker>
                     </ng-container>
