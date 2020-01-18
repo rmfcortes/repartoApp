@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ModalController, ToastController, AlertController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { CallNumber } from '@ionic-native/call-number/ngx';
@@ -14,8 +14,6 @@ import { fadeEnterAnimation } from 'src/app/animations/fadeEnter';
 
 import { ProductoCarga } from '../../interfaces/producto.interface';
 import { DatosVenta } from 'src/app/interfaces/venta.interface';
-import { UbicacionService } from 'src/app/services/ubicacion.service';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 @Component({
   selector: 'app-productos-modal',
   templateUrl: './productos-modal.page.html',
@@ -51,34 +49,18 @@ export class ProductosModalPage {
   };
 
   ubicacionSub: Subscription;
-  hasPrecioEspecial = false;
-  distanciaMax = 100; // metros
-  skipDist = false;
+
 
   constructor(
     private callNumber: CallNumber,
-    private alertCtrl: AlertController,
-    private barcodeScanner: BarcodeScanner,
+    private clienteService: ClientesService,
     private toastController: ToastController,
     private modalController: ModalController,
-    private ubicacionService: UbicacionService,
-    private clienteService: ClientesService,
     private ventaService: VentaService,
   ) { }
 
   ionViewWillEnter() {
     this.getProds();
-    this.trackUbicacion();
-  }
-
-  trackUbicacion() {
-    if (this.ubicacionSub) {
-      return;
-    }
-    this.ubicacionSub = this.ubicacionService.ubicacion.subscribe(coords => {
-      this.ubicacion.lat = coords.lat;
-      this.ubicacion.lng = coords.lng;
-    });
   }
 
   async getProds() {
@@ -172,7 +154,6 @@ export class ProductosModalPage {
           const i = this.productos.findIndex(p => p.id === pre[0]);
           if (i >= 0) {
             this.productos[i].precioEspecial = pre[1];
-            this.hasPrecioEspecial = true;
           }
         });
       }
@@ -194,7 +175,7 @@ export class ProductosModalPage {
       return;
     }
     producto.cantidad++;
-    this.cuenta += parseInt(producto.precioEspecial , 10) ? parseInt(producto.precioEspecial, 10) : parseInt(producto.precio, 10);
+    this.cuenta += parseInt(producto.precioEspecial ,10) ? parseInt(producto.precioEspecial, 10) : parseInt(producto.precio, 10);
   }
 
   minusProduct(producto) {
@@ -207,19 +188,6 @@ export class ProductosModalPage {
 
   async cerrarVenta() {
     this.validando = true;
-    if (this.hasPrecioEspecial && !this.skipDist) {
-      const d = await this.ubicacionService.calculaDistancia(
-        this.ubicacion.lat,
-        this.ubicacion.lng,
-        this.datosVenta.lat,
-        this.datosVenta.lng
-      );
-      if (d > this.distanciaMax) {
-        this.presentAlert('Fuera de alcance',
-          'Te encuentras muy lejos de la ubicación registrada por el cliente. Acércate o Scanea su código QR');
-        return;
-      }
-    }
     this.datosVenta.cliente = this.usuario || 'No registrado';
     const vendidos = this.productos.filter(p => p.cantidad > 0);
     if (this.cliente.origen === 'pedidos') {
@@ -256,35 +224,9 @@ export class ProductosModalPage {
       .catch(err => console.error(err));
   }
 
-  scanCode() {
-    this.barcodeScanner
-      .scan()
-      .then(barcodeData => {
-        const resp = JSON.stringify(barcodeData);
-        const data = JSON.parse(resp);
-        if (data.text) {
-          const cliente = data.text;
-          console.log(cliente);
-          console.log(this.cliente.cliente);
-          if (cliente === this.cliente.cliente) {
-            this.skipDist = true;
-            this.cerrarVenta();
-          } else {
-            this.validando = false;
-            this.presentAlertError('No corresponde', 'El código escaneado no corresponde al cliente del cual quieres cerrar venta');
-          }
-        }
-      })
-      .catch(err => {
-        console.log('Error', err);
-      });
-  }
-
   // Salida
 
   regresar() {
-    this.hasPrecioEspecial = false;
-    this.skipDist = false;
     this.modalController.dismiss(null);
   }
 
@@ -296,39 +238,6 @@ export class ProductosModalPage {
       duration: 2000
     });
     toast.present();
-  }
-
-  async presentAlert(title, msg) {
-    const alert = await this.alertCtrl.create({
-      header: title,
-      message: msg,
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            this.validando = false;
-          }
-        },
-        {
-          text: 'Scan',
-          handler: () => {
-            this.scanCode();
-          }
-        },
-      ]
-    });
-
-    await alert.present();
-  }
-
-  async presentAlertError(title, msg) {
-    const alert = await this.alertCtrl.create({
-      header: title,
-      message: msg,
-      buttons: ['OK']
-    });
-
-    await alert.present();
   }
 
 }

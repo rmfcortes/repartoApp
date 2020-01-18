@@ -234,12 +234,9 @@ export class VentaService {
     vendidos[nombre] = datos;
     const prods = {};
     const nomProds = 'Productos';
-    console.log(cuenta);
     productos.forEach(p => {
         prods[p.id] = p.cantidad;
-        this.db.object(`carga/${this.uid}/prodsVendidos/${p.id}`).query.ref
-          .transaction( count => count ? parseInt(count, 10) + parseInt(p.cantidad, 10) : parseInt(p.cantidad, 10));
-        this.db.object(`ventas/${this.fecha}/${this.uid}/detalles/${this.viaje}/prods/${p.id}`).query.ref
+        this.db.object(`carga/${this.uid}/sumario/${p.id}`).query.ref
           .transaction( count => count ? parseInt(count, 10) + parseInt(p.cantidad, 10) : parseInt(p.cantidad, 10));
     });
     vendidos[nomProds] = prods;
@@ -248,9 +245,9 @@ export class VentaService {
     vendidos[nomId] = id;
     this.db.object(`ventas/${this.fecha}/${this.uid}/venta/${this.viaje}/${id}`).set(vendidos);
     this.db.object(`ventas/${this.fecha}/${this.uid}/detalles/${this.viaje}/venta`).query.ref
-      .transaction( count => count ? parseInt(count, 10) + cuenta : cuenta);
+      .transaction( count => count ? parseInt(count, 10) + parseInt(cuenta, 10) : parseInt(cuenta, 10));
     this.db.object(`carga/${this.uid}/sumario/venta`).query.ref
-      .transaction( count => count ? parseInt(count, 10) + cuenta : cuenta);
+      .transaction( count => count ? parseInt(count, 10) + parseInt(cuenta, 10) : parseInt(cuenta, 10));
   }
 
   async deletePedido(pedido) {

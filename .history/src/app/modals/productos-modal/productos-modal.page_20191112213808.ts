@@ -263,9 +263,9 @@ export class ProductosModalPage {
         const resp = JSON.stringify(barcodeData);
         const data = JSON.parse(resp);
         if (data.text) {
-          const cliente = data.text;
-          console.log(cliente);
-          console.log(this.cliente.cliente);
+          const cliente = {
+            cliente: data.text,
+          };
           if (cliente === this.cliente.cliente) {
             this.skipDist = true;
             this.cerrarVenta();

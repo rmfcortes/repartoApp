@@ -53,7 +53,6 @@ export class ProductosModalPage {
   ubicacionSub: Subscription;
   hasPrecioEspecial = false;
   distanciaMax = 100; // metros
-  skipDist = false;
 
   constructor(
     private callNumber: CallNumber,
@@ -207,7 +206,7 @@ export class ProductosModalPage {
 
   async cerrarVenta() {
     this.validando = true;
-    if (this.hasPrecioEspecial && !this.skipDist) {
+    if (this.hasPrecioEspecial) {
       const d = await this.ubicacionService.calculaDistancia(
         this.ubicacion.lat,
         this.ubicacion.lng,
@@ -217,7 +216,6 @@ export class ProductosModalPage {
       if (d > this.distanciaMax) {
         this.presentAlert('Fuera de alcance',
           'Te encuentras muy lejos de la ubicación registrada por el cliente. Acércate o Scanea su código QR');
-        return;
       }
     }
     this.datosVenta.cliente = this.usuario || 'No registrado';
@@ -263,16 +261,10 @@ export class ProductosModalPage {
         const resp = JSON.stringify(barcodeData);
         const data = JSON.parse(resp);
         if (data.text) {
-          const cliente = data.text;
-          console.log(cliente);
-          console.log(this.cliente.cliente);
-          if (cliente === this.cliente.cliente) {
-            this.skipDist = true;
-            this.cerrarVenta();
-          } else {
-            this.validando = false;
-            this.presentAlertError('No corresponde', 'El código escaneado no corresponde al cliente del cual quieres cerrar venta');
-          }
+          const cliente = {
+            cliente: data.text,
+          };
+          this.presentProductos(cliente, 'qr');
         }
       })
       .catch(err => {
@@ -284,7 +276,6 @@ export class ProductosModalPage {
 
   regresar() {
     this.hasPrecioEspecial = false;
-    this.skipDist = false;
     this.modalController.dismiss(null);
   }
 
@@ -306,7 +297,7 @@ export class ProductosModalPage {
         {
           text: 'OK',
           handler: () => {
-            this.validando = false;
+            console.log('ok');
           }
         },
         {
@@ -316,16 +307,6 @@ export class ProductosModalPage {
           }
         },
       ]
-    });
-
-    await alert.present();
-  }
-
-  async presentAlertError(title, msg) {
-    const alert = await this.alertCtrl.create({
-      header: title,
-      message: msg,
-      buttons: ['OK']
     });
 
     await alert.present();

@@ -26,7 +26,6 @@ tmp/
 temp/
 platforms/
 plugins/
-/src/environments/**
 plugins/android.json
 plugins/ios.json
 $RECYCLE.BIN/

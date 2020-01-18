@@ -217,7 +217,6 @@ export class ProductosModalPage {
       if (d > this.distanciaMax) {
         this.presentAlert('Fuera de alcance',
           'Te encuentras muy lejos de la ubicación registrada por el cliente. Acércate o Scanea su código QR');
-        return;
       }
     }
     this.datosVenta.cliente = this.usuario || 'No registrado';
@@ -263,9 +262,9 @@ export class ProductosModalPage {
         const resp = JSON.stringify(barcodeData);
         const data = JSON.parse(resp);
         if (data.text) {
-          const cliente = data.text;
-          console.log(cliente);
-          console.log(this.cliente.cliente);
+          const cliente = {
+            cliente: data.text,
+          };
           if (cliente === this.cliente.cliente) {
             this.skipDist = true;
             this.cerrarVenta();

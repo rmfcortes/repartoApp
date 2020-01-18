@@ -35,7 +35,7 @@ export class CierreService {
 
   getProdsVendidos() {
     return new Promise(async (resolve, reject) => {
-      const prodSub = this.db.object(`carga/${this.uid}/prodsVendidos`).valueChanges()
+      const prodSub = this.db.list(`carga/${this.uid}/prodsVendidos`).valueChanges()
         .subscribe(resumen => {
           prodSub.unsubscribe();
           resolve(resumen);
